@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご予約 | ホテル コモレ福井</title>
+<meta name="description" content="ホテル コモレ福井のご予約。日程・人数・客室タイプを選んで、料金の目安をその場で確認できます。">
+<link rel="stylesheet" href="style.css">
+<style>
+  .resv-hero{padding:clamp(40px,6vw,72px) 0 0}
+  .resv-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:clamp(28px,4vw,56px);align-items:start;padding-bottom:clamp(64px,9vw,120px)}
+
+  .field{margin-bottom:22px}
+  .field > label{display:block;font-family:var(--jp);font-weight:500;font-size:14px;margin-bottom:8px}
+  .field .hint{color:var(--ink-faint);font-size:12px;font-weight:400;margin-left:6px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  input,select,textarea{
+    width:100%;font-family:var(--jp-body);font-size:15px;color:var(--ink);
+    padding:13px 14px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;
+    transition:border-color .2s ease,box-shadow .2s ease;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  textarea{resize:vertical;min-height:96px}
+  .stepper{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;width:max-content}
+  .stepper button{width:46px;border:0;background:var(--bg-soft);font-family:var(--num);font-size:18px;cursor:pointer;color:var(--ink);transition:background .2s}
+  .stepper button:hover{background:var(--accent-soft)}
+  .stepper input{width:64px;text-align:center;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:0}
+  .stepper input:focus{box-shadow:none}
+
+  .summary{position:sticky;top:96px;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(24px,3vw,32px);background:var(--bg-soft)}
+  .summary h3{font-family:var(--jp);font-weight:500;font-size:18px;margin-bottom:18px}
+  .sumrow{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .sumrow span:first-child{color:var(--ink-soft)}
+  .sumrow span:last-child{font-family:var(--jp);font-weight:500;text-align:right}
+  .sumtotal{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px}
+  .sumtotal .lbl{font-size:14px;color:var(--ink-soft)}
+  .sumtotal .val{font-family:var(--num);font-weight:600;font-size:30px;color:var(--accent)}
+  .sumtotal .val small{font-family:var(--jp);font-size:13px;font-weight:400;color:var(--ink-soft);margin-left:4px}
+  .summary .note{font-size:11.5px;color:var(--ink-faint);margin-top:14px;line-height:1.7}
+
+  .err{color:#b4453a;font-size:13px;margin-top:6px;display:none}
+  .err.show{display:block}
+
+  /* confirmation */
+  .confirm{display:none;border:1px solid var(--accent-soft);background:linear-gradient(180deg,var(--bg-tint),#fff);border-radius:var(--radius);padding:clamp(28px,4vw,44px)}
+  .confirm.show{display:block;animation:rise .5s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .confirm .mark{width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
+  .confirm h2{font-family:var(--jp);font-weight:500;font-size:24px;margin-bottom:8px}
+  .confirm p{color:var(--ink-soft);font-size:14.5px}
+  .confirm .resno{font-family:var(--num);letter-spacing:.12em;font-weight:600;font-size:18px;color:var(--accent);margin:18px 0;padding:12px 16px;background:#fff;border:1px dashed var(--accent-soft);border-radius:var(--radius);display:inline-block}
+  .confirm dl{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:14px;margin:18px 0 24px}
+  .confirm dt{color:var(--ink-soft)}
+  .confirm dd{font-family:var(--jp);font-weight:500}
+
+  @media (max-width:880px){
+    .resv-grid{grid-template-columns:1fr}
+    .summary{position:static}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="index.html"><b>COMORE</b><span>FUKUI</span></a>
+    <nav class="nav__links">
+      <a href="index.html#concept">コンセプト</a>
+      <a href="index.html#rooms">客室</a>
+      <a href="index.html#dining">ダイニング</a>
+      <a href="index.html#access">アクセス</a>
+    </nav>
+    <a class="btn btn--ghost nav__cta" href="index.html">トップへ戻る</a>
+  </div>
+</header>
+
+<!-- ===== RESERVATION ===== -->
+<section class="hero resv-hero">
+  <div class="wrap">
+    <p class="eyebrow">Reservation</p>
+    <h1 class="h-lead">ご予約</h1>
+    <p class="lead-sub" style="margin-top:14px">日程・人数・客室をお選びください。料金の目安を右側にその場で表示します。</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:clamp(32px,4vw,48px)">
+  <div class="wrap resv-grid">
+
+    <!-- form -->
+    <div id="form-area">
+      <div class="row2">
+        <div class="field">
+          <label for="checkin">チェックイン</label>
+          <input type="date" id="checkin">
+        </div>
+        <div class="field">
+          <label for="checkout">チェックアウト</label>
+          <input type="date" id="checkout">
+        </div>
+      </div>
+      <p class="err" id="err-date">チェックアウトはチェックインより後の日付をお選びください。</p>
+
+      <div class="field">
+        <label for="roomtype">客室タイプ</label>
+        <select id="roomtype">
+          <option value="9800">スタンダードシングル（16㎡）／ 9,800円〜</option>
+          <option value="16000">モデレートツイン（22㎡）／ 16,000円〜</option>
+          <option value="18000">ユニバーサルツイン（26㎡）／ 18,000円〜</option>
+          <option value="22000" selected>デラックスツイン（28㎡）／ 22,000円〜</option>
+          <option value="26000">和洋室（32㎡）／ 26,000円〜</option>
+          <option value="38000">コーナースイート（40㎡）／ 38,000円〜</option>
+        </select>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>客室数</label>
+          <div class="stepper">
+            <button type="button" data-step="rooms" data-d="-1">−</button>
+            <input type="number" id="rooms" value="1" min="1" max="10" readonly>
+            <button type="button" data-step="rooms" data-d="1">＋</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>食事 <span class="hint">朝食 +1,500円/人・泊</span></label>
+          <select id="meal">
+            <option value="1" selected>朝食付き</option>
+            <option value="0">素泊まり</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>大人 <span class="hint">名</span></label>
+          <div class="stepper">
+            <button type="button" data-step="adults" data-d="-1">−</button>
+            <input type="number" id="adults" value="2" min="1" max="20" readonly>
+            <button type="button" data-step="adults" data-d="1">＋</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>子供 <span class="hint">名</span></label>
+          <div class="stepper">
+            <button type="button" data-step="children" data-d="-1">−</button>
+            <input type="number" id="children" value="0" min="0" max="20" readonly>
+            <button type="button" data-step="children" data-d="1">＋</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="name">代表者名</label>
+        <input type="text" id="name" placeholder="福井 太郎" autocomplete="name">
+        <p class="err" id="err-name">お名前をご入力ください。</p>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="email">メールアドレス</label>
+          <input type="email" id="email" placeholder="example@mail.com" autocomplete="email">
+          <p class="err" id="err-email">メールアドレスの形式をご確認ください。</p>
+        </div>
+        <div class="field">
+          <label for="tel">電話番号</label>
+          <input type="tel" id="tel" placeholder="090-0000-0000" autocomplete="tel">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="req">ご要望（任意）</label>
+        <textarea id="req" placeholder="高層階希望、アレルギー、到着予定時刻など"></textarea>
+      </div>
+
+      <button class="btn btn--primary btn--block" type="button" id="submit" style="padding:16px">予約を確定する</button>
+    </div>
+
+    <!-- summary / confirmation -->
+    <div>
+      <div class="summary" id="summary">
+        <h3>ご予約内容</h3>
+        <div class="sumrow"><span>日程</span><span id="s-dates">未選択</span></div>
+        <div class="sumrow"><span>泊数</span><span id="s-nights">ー</span></div>
+        <div class="sumrow"><span>客室</span><span id="s-room">デラックスツイン ×1室</span></div>
+        <div class="sumrow"><span>人数</span><span id="s-guests">大人2名</span></div>
+        <div class="sumrow"><span>食事</span><span id="s-meal">朝食付き</span></div>
+        <div class="sumtotal">
+          <span class="lbl">合計目安</span>
+          <span class="val"><span id="s-total">0</span><small>円（税込）</small></span>
+        </div>
+        <p class="note">表示は目安です。実際の料金は時期やプランにより変動します。こちらはデモサイトのため、予約は確定されません。</p>
+      </div>
+
+      <div class="confirm" id="confirm">
+        <div class="mark">✓</div>
+        <h2>仮予約を承りました。</h2>
+        <p>確認のご連絡を差し上げます。下記の予約番号をお控えください。</p>
+        <div class="resno" id="c-no">COM-000000</div>
+        <dl>
+          <dt>日程</dt><dd id="c-dates"></dd>
+          <dt>客室</dt><dd id="c-room"></dd>
+          <dt>人数</dt><dd id="c-guests"></dd>
+          <dt>合計目安</dt><dd id="c-total"></dd>
+        </dl>
+        <p class="note" style="color:var(--ink-faint);font-size:12px;margin-bottom:18px">※ これはデモサイトです。実際の予約・課金・送信は行われません。</p>
+        <button class="btn btn--ghost" type="button" id="again">入力に戻る</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__bottom" style="margin-top:0;border-top:0">
+      <span>© COMORE FUKUI（デモサイト）</span>
+      <span class="demo-pill">Demo Site</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  const $ = id => document.getElementById(id);
+  const roomNames = {
+    "9800":"スタンダードシングル","16000":"モデレートツイン","18000":"ユニバーサルツイン",
+    "22000":"デラックスツイン","26000":"和洋室","38000":"コーナースイート"
+  };
+  const yen = n => n.toLocaleString('ja-JP');
+
+  // steppers
+  document.querySelectorAll('.stepper button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const t = $(b.dataset.step);
+      const min = +t.min, max = +t.max;
+      let v = (+t.value) + (+b.dataset.d);
+      v = Math.max(min, Math.min(max, v));
+      t.value = v; update();
+    });
+  });
+
+  function nights(){
+    const ci = $('checkin').value, co = $('checkout').value;
+    if(!ci || !co) return 0;
+    const d = (new Date(co) - new Date(ci)) / 86400000;
+    return d > 0 ? d : 0;
+  }
+
+  function update(){
+    const n = nights();
+    const rate = +$('roomtype').value;
+    const rooms = +$('rooms').value;
+    const adults = +$('adults').value;
+    const children = +$('children').value;
+    const meal = +$('meal').value;
+
+    // dates label
+    const ci = $('checkin').value, co = $('checkout').value;
+    $('s-dates').textContent = (ci && co) ? `${ci.replaceAll('-','/')} → ${co.replaceAll('-','/')}` : '未選択';
+    $('s-nights').textContent = n ? `${n}泊` : 'ー';
+    $('s-room').textContent = `${roomNames[$('roomtype').value]} ×${rooms}室`;
+    $('s-guests').textContent = `大人${adults}名` + (children ? ` / 子供${children}名` : '');
+    $('s-meal').textContent = meal ? '朝食付き' : '素泊まり';
+
+    const roomCost = rate * rooms * n;
+    const mealCost = meal ? 1500 * adults * n : 0;
+    const total = roomCost + mealCost;
+    $('s-total').textContent = yen(total);
+    return {n, rate, rooms, adults, children, meal, total, ci, co};
+  }
+
+  ['checkin','checkout','roomtype','meal','adults','children','rooms'].forEach(id=>{
+    $(id).addEventListener('change', update);
+  });
+
+  // default dates: today+14 / +15
+  (function presetDates(){
+    const f = d => d.toISOString().slice(0,10);
+    const a = new Date(); a.setDate(a.getDate()+14);
+    const b = new Date(); b.setDate(b.getDate()+15);
+    $('checkin').value = f(a); $('checkout').value = f(b);
+    $('checkin').min = f(new Date());
+    update();
+  })();
+
+  function showErr(id,on){ $(id).classList.toggle('show', on); }
+
+  $('submit').addEventListener('click', ()=>{
+    const s = update();
+    let ok = true;
+    showErr('err-date', false); showErr('err-name', false); showErr('err-email', false);
+
+    if(s.n <= 0){ showErr('err-date', true); ok = false; }
+    if(!$('name').value.trim()){ showErr('err-name', true); ok = false; }
+    const em = $('email').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ showErr('err-email', true); ok = false; }
+    if(!ok){ document.querySelector('.err.show')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+
+    // build confirmation
+    const no = 'COM-' + String(Math.floor(100000 + Math.random()*900000));
+    $('c-no').textContent = no;
+    $('c-dates').textContent = `${s.ci.replaceAll('-','/')} → ${s.co.replaceAll('-','/')}（${s.n}泊）`;
+    $('c-room').textContent = `${roomNames[String(s.rate)]} ×${s.rooms}室`;
+    $('c-guests').textContent = `大人${s.adults}名` + (s.children ? ` / 子供${s.children}名` : '');
+    $('c-total').textContent = `${yen(s.total)}円（税込・目安）`;
+
+    $('form-area').style.display = 'none';
+    $('summary').style.display = 'none';
+    const c = $('confirm'); c.classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  $('again').addEventListener('click', ()=>{
+    $('confirm').classList.remove('show');
+    $('form-area').style.display = '';
+    $('summary').style.display = '';
+  });
+</script>
+</body>
+</html>
