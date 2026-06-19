@@ -107,6 +107,11 @@ h1,h2,h3{font-family:var(--jp);font-weight:500;line-height:1.4;letter-spacing:.0
 .hero__jp em{font-style:normal;color:var(--accent)}
 .hero__jp .nowrap{white-space:nowrap}
 .hero__sub{margin-top:26px;color:var(--ink-soft);font-size:clamp(15px,1.7vw,17px);max-width:34ch}
+/* keep hero copy readable over the background photo */
+.hero:not(.resv-hero) .hero__sub{color:var(--ink)}
+.hero:not(.resv-hero) .hero__copy{
+  text-shadow:0 1px 10px rgba(255,255,255,.9),0 0 3px rgba(255,255,255,.95);
+}
 .hero__actions{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap}
 /* keep the ghost button readable over the hero photo */
 .hero__actions .btn--ghost{
