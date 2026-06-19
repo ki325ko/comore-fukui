@@ -32,26 +32,27 @@
   <div class="wrap hero__grid">
     <div class="hero__copy reveal">
       <p class="eyebrow">Fukui Station Front Hotel</p>
-      <h1 class="hero__jp">福井の旅は、<br><em>ここから</em>はじまる。</h1>
+      <h1 class="hero__jp">福井の旅は、<br><span class="nowrap"><em>ここから</em>はじまる。</span></h1>
       <p class="hero__sub">北陸新幹線・福井駅から徒歩すぐ。恐竜博物館、永平寺、東尋坊……どこへ向かうにも便利な拠点に。越前の食と、清潔で機能的な客室でお迎えします。</p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="reservation.html">空室を確認する</a>
         <a class="btn btn--ghost" href="#rooms">客室を見る</a>
       </div>
     </div>
-    <div class="hero__media reveal">
-      <div class="ph ph--hero"><img src="images/front.png" alt="フロント・ロビー" loading="lazy"></div>
-    </div>
+    <div class="hero__media reveal" aria-hidden="true"></div>
   </div>
 </section>
 
 <!-- ===== CONCEPT ===== -->
 <section class="section" id="concept">
   <div class="wrap">
-    <div class="concept__head reveal">
-      <p class="eyebrow">Concept</p>
-      <h2 class="h-sec">福井で、過ごす時間そのものを。<br>「泊まって楽しむ街」へ。</h2>
-      <p class="lead-sub">新幹線でぐっと近くなった福井。けれど見どころは街なかから少し離れています。コモレ福井は、駅前という立地そのものを強みに、県内のどこへ向かうにも便利な拠点として設計しました。朝は越前の食ではじまり、夜は街に出て、館内でくつろぐ。滞在のリズムは、お客様のものです。</p>
+    <div class="split reveal" style="grid-template-columns:1.05fr .95fr;align-items:center;margin-bottom:clamp(40px,6vw,72px)">
+      <div class="concept__head" style="margin-bottom:0;max-width:48ch">
+        <p class="eyebrow">Concept</p>
+        <h2 class="h-sec">福井で、過ごす時間そのものを。<br>「泊まって楽しむ街」へ。</h2>
+        <p class="lead-sub">新幹線でぐっと近くなった福井。けれど見どころは街なかから少し離れています。コモレ福井は、駅前という立地そのものを強みに、県内のどこへ向かうにも便利な拠点として設計しました。朝は越前の食ではじまり、夜は街に出て、館内でくつろぐ。滞在のリズムは、お客様のものです。</p>
+      </div>
+      <div class="split__media"><div class="ph ph--room"><img src="images/front.png" alt="フロント・ロビー" loading="lazy"></div></div>
     </div>
 
     <div class="pillars reveal">
@@ -296,6 +297,20 @@
     entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+<!-- LIENS BOT チャットウィジェット -->
+<script>
+  (function() {
+    var script = document.createElement('script');
+    script.src = 'https://app.liens-web.com/widget.js?v=' + Date.now();
+    script.setAttribute('data-bot-id', 'cmqjeu42h002v5d01hby0ckvb');
+    script.setAttribute('data-api-url', 'https://app.liens-web.com');
+    script.setAttribute('data-color', '#4F46E5');
+    script.setAttribute('data-position', 'bottom-right');
+    script.defer = true;
+    document.head.appendChild(script);
+  })();
 </script>
 </body>
 </html>
